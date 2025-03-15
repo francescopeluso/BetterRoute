@@ -15,12 +15,41 @@ const statusColors = {
   "programmata": "#9ca3af", // gray
 };
 
+// Status legend component
+const StatusLegend = () => {
+  return (
+    <div className="flex items-center space-x-4 mb-4">
+      <div className="text-sm font-medium mr-2">Legenda:</div>
+      {Object.entries(statusColors).map(([status, color]) => (
+        <div key={status} className="flex items-center">
+          <div 
+            className="w-3 h-3 rounded-full mr-1" 
+            style={{ backgroundColor: color }}
+          ></div>
+          <span className="text-sm capitalize">{status}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 export default function BetterCalendar() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
   const [events, setEvents] = React.useState([
-    { id: '1', title: "Consegna Demo 1", start: "2025-03-15T14:00:00", end: "2025-03-15T16:00:00", status: "programmata" },
-    { id: '2', title: "Consegna Demo 2", start: "2025-03-16T10:00:00", end: "2025-03-16T12:00:00", status: "in corso" },
+    { id: '0', title: "🕒 Rotta 'Napoli Centro' del veicolo 'Van 04'", start: "2025-03-10T09:00:00", end: "2025-03-10T15:00:00", status: "programmata" },
+    { id: '1', title: "🕒 Rotta 'Milano Centro' del veicolo 'Furgone 01'", start: "2025-03-11T08:00:00", end: "2025-03-11T12:00:00", status: "programmata" },
+    { id: '2', title: "🚚 Rotta 'Torino Sud' del veicolo 'Van 02'", start: "2025-03-11T09:00:00", end: "2025-03-11T14:00:00", status: "in corso" },
+    { id: '3', title: "⚠️ Rotta 'Roma Nord' del veicolo 'Furgone 03'", start: "2025-03-12T08:00:00", end: "2025-03-12T15:00:00", status: "problemi" },
+    { id: '4', title: "🕒 Rotta 'Firenze Centro' del veicolo 'Van 01'", start: "2025-03-12T09:00:00", end: "2025-03-12T16:00:00", status: "programmata" },
+    { id: '5', title: "🚚 Rotta 'Bologna Est' del veicolo 'Furgone 02'", start: "2025-03-13T08:00:00", end: "2025-03-13T13:00:00", status: "in corso" },
+    { id: '6', title: "⏰ Rotta 'Venezia Ovest' del veicolo 'Van 03'", start: "2025-03-13T14:00:00", end: "2025-03-13T19:00:00", status: "in ritardo" },
+    { id: '7', title: "🕒 Rotta 'Genova Porto' del veicolo 'Furgone 01'", start: "2025-03-14T08:00:00", end: "2025-03-14T14:00:00", status: "programmata" },
+    { id: '8', title: "🚚 Rotta 'Padova Centro' del veicolo 'Van 02'", start: "2025-03-14T15:00:00", end: "2025-03-14T19:00:00", status: "in corso" },
+    { id: '9', title: "⚠️ Rotta 'Verona Sud' del veicolo 'Furgone 03'", start: "2025-03-15T08:00:00", end: "2025-03-15T13:00:00", status: "problemi" },
+    { id: '10', title: "⏰ Rotta 'Bergamo Est' del veicolo 'Van 01'", start: "2025-03-15T14:00:00", end: "2025-03-15T19:00:00", status: "in ritardo" },
+    { id: '11', title: "🕒 Rotta 'Brescia Ovest' del veicolo 'Furgone 02'", start: "2025-03-16T08:00:00", end: "2025-03-16T15:00:00", status: "programmata" },
+    { id: '12', title: "🚚 Rotta 'Parma Centro' del veicolo 'Van 03'", start: "2025-03-16T16:00:00", end: "2025-03-16T19:00:00", status: "in corso" }
   ]);
   const [newEvent, setNewEvent] = React.useState({
     id: "",
@@ -149,7 +178,8 @@ export default function BetterCalendar() {
 
   return (
     <div className="relative">
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between mb-4 items-center">
+        <StatusLegend />
         <button
           onClick={openEventForm}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"

@@ -36,7 +36,7 @@ export default function FleetPage() {
       consumption: "11.5",
       capacity: "1200",
       volume: "16",
-      available: true,
+      available: false,
     },
     {
       id: "2",
