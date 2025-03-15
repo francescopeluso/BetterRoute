@@ -12,7 +12,6 @@ export default function CalendarPage() {
             Questa è la pagina del calendario. Puoi gestire consegne, appuntamenti, e altro, da qui!
           </p>
         </div>
-        
       </section>
 
       <div>
