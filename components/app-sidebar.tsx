@@ -1,4 +1,4 @@
-import { Calendar, Home, FileWarningIcon, Sparkles, MapIcon, Truck } from "lucide-react"
+import { Calendar, Home, FileWarningIcon, Sparkles, MapIcon, Truck, ChartArea } from "lucide-react"
 
 import {
   Sidebar,
@@ -16,6 +16,11 @@ const items = [
     title: "Home",
     url: "/",
     icon: Home,
+  },
+  {
+    title: "Statistiche",
+    url: "/stats",
+    icon: ChartArea,
   },
   {
     title: "Gestisci consegne",
@@ -36,7 +41,7 @@ const items = [
     title: "Report errori",
     url: "/reports",
     icon: FileWarningIcon,
-  },
+  }
 ]
 
 export function AppSidebar() {

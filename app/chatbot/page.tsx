@@ -1,4 +1,6 @@
 import React from "react";
+import Image from "next/image";
+import HowardStark from "@/public/howard-stark.jpg";
 
 export default function ChatPage() {
   return (
@@ -14,8 +16,15 @@ export default function ChatPage() {
         
       </section>
 
-      <div>
-        
+      <div className="my-4 flex flex-col items-center justify-center text-center gap-4">
+        <Image 
+          src={HowardStark}
+          alt="Howard Stark image"
+          width={600}
+          height={400}
+          className="rounded-lg"
+        />
+        <strong>Siamo limitati dalle tecnologie del nostro tempo.</strong> <br/>Questa funzione non è ancora disponibile. ☹️
       </div>
 
     </div>

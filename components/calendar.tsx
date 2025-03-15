@@ -5,13 +5,22 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid"; 
 import interactionPlugin from "@fullcalendar/interaction";
+import allLocales from '@fullcalendar/core/locales-all';
+
+// Define status color mapping
+const statusColors = {
+  "in corso": "#4ade80", // green
+  "problemi": "#facc15", // yellow
+  "in ritardo": "#fb923c", // orange
+  "programmata": "#9ca3af", // gray
+};
 
 export default function BetterCalendar() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
   const [events, setEvents] = React.useState([
-    { id: '1', title: "Consegna Demo 1", start: "2025-03-15T14:00:00", end: "2025-03-15T16:00:00" },
-    { id: '2', title: "Consegna Demo 2", start: "2025-03-16T10:00:00", end: "2025-03-16T12:00:00" },
+    { id: '1', title: "Consegna Demo 1", start: "2025-03-15T14:00:00", end: "2025-03-15T16:00:00", status: "programmata" },
+    { id: '2', title: "Consegna Demo 2", start: "2025-03-16T10:00:00", end: "2025-03-16T12:00:00", status: "in corso" },
   ]);
   const [newEvent, setNewEvent] = React.useState({
     id: "",
@@ -19,6 +28,7 @@ export default function BetterCalendar() {
     date: "",
     start: "",
     end: "",
+    status: "programmata", // default status
   });
 
   const handleDateClick = (arg) => {
@@ -29,6 +39,7 @@ export default function BetterCalendar() {
       date: arg.dateStr,
       start: "",
       end: "",
+      status: "programmata",
     });
     setIsOpen(true);
   };
@@ -52,6 +63,7 @@ export default function BetterCalendar() {
         date: formattedDate,
         start: formattedStartTime,
         end: formattedEndTime,
+        status: event.status || "programmata",
       });
       
       setIsEdit(true);
@@ -95,6 +107,7 @@ export default function BetterCalendar() {
       date: today,
       start: "",
       end: "",
+      status: "programmata",
     });
     setIsOpen(true);
   };
@@ -106,7 +119,10 @@ export default function BetterCalendar() {
       id: isEdit ? newEvent.id : Date.now().toString(),
       title: newEvent.title,
       start: `${newEvent.date}T${newEvent.start}:00`,
-      end: newEvent.end ? `${newEvent.date}T${newEvent.end}:00` : `${newEvent.date}T${newEvent.start}:00`
+      end: newEvent.end ? `${newEvent.date}T${newEvent.end}:00` : `${newEvent.date}T${newEvent.start}:00`,
+      status: newEvent.status,
+      backgroundColor: statusColors[newEvent.status],
+      borderColor: statusColors[newEvent.status],
     };
 
     if (isEdit) {
@@ -120,9 +136,16 @@ export default function BetterCalendar() {
     }
     
     setIsOpen(false);
-    setNewEvent({ id: "", title: "", date: "", start: "", end: "" });
+    setNewEvent({ id: "", title: "", date: "", start: "", end: "", status: "programmata" });
     setIsEdit(false);
   };
+
+  // Process events to add color properties
+  const coloredEvents = events.map(event => ({
+    ...event,
+    backgroundColor: statusColors[event.status] || statusColors["programmata"],
+    borderColor: statusColors[event.status] || statusColors["programmata"]
+  }));
 
   return (
     <div className="relative">
@@ -140,14 +163,17 @@ export default function BetterCalendar() {
         initialView="timeGridWeek"
         weekends={true}
         firstDay={1}
+        locales={allLocales}
+        locale={'it'}
         slotMinTime="08:00:00"
         slotMaxTime="20:00:00"
+        allDaySlot={false}
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
-          right: 'timeGridWeek, timeGridDay'
+          right: 'timeGridWeek,timeGridDay'
         }}
-        events={events}
+        events={coloredEvents}
         dateClick={handleDateClick}
         eventClick={handleEventClick}
         editable={true}
@@ -192,6 +218,17 @@ export default function BetterCalendar() {
                   required
                   />
                 </div>
+                {isEdit && (
+                  <div className="grid gap-2">
+                  <label htmlFor="status" className="text-sm font-medium">Stato consegna</label>
+                  <div className="flex h-10 w-full rounded-md border border-input bg-gray-50 px-3 py-2 text-gray-700">
+                    {newEvent.status === "programmata" && "Programmata"}
+                    {newEvent.status === "in corso" && "In corso"}
+                    {newEvent.status === "problemi" && "Problemi"}
+                    {newEvent.status === "in ritardo" && "In ritardo"}
+                  </div>
+                  </div>
+                )}
                 <div className="flex justify-end gap-2 mt-4">
                   <button
                     type="button"
