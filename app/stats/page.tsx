@@ -144,7 +144,7 @@ export default function StatsPage() {
           <p className="text-2xl font-bold">30.0 tonnellate</p>
           </div>
           <div>
-          <p className="text-sm font-medium">Riduzione rispetto all'anno scorso</p>
+          <p className="text-sm font-medium">Riduzione rispetto all&apos;anno scorso</p>
           <p className="text-2xl font-bold text-green-600">-12%</p>
           </div>
         </div>
