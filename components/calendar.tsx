@@ -8,11 +8,13 @@ import interactionPlugin from "@fullcalendar/interaction";
 
 export default function BetterCalendar() {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isEdit, setIsEdit] = React.useState(false);
   const [events, setEvents] = React.useState([
     { id: '1', title: "Consegna Demo 1", start: "2025-03-15T14:00:00", end: "2025-03-15T16:00:00" },
     { id: '2', title: "Consegna Demo 2", start: "2025-03-16T10:00:00", end: "2025-03-16T12:00:00" },
   ]);
   const [newEvent, setNewEvent] = React.useState({
+    id: "",
     title: "",
     date: "",
     start: "",
@@ -20,11 +22,41 @@ export default function BetterCalendar() {
   });
 
   const handleDateClick = (arg) => {
+    setIsEdit(false);
     setNewEvent({
-      ...newEvent,
+      id: "",
+      title: "",
       date: arg.dateStr,
+      start: "",
+      end: "",
     });
     setIsOpen(true);
+  };
+
+  const handleEventClick = (info) => {
+    const event = events.find(e => e.id === info.event.id);
+    if (event) {
+      const startDate = new Date(event.start);
+      const formattedDate = startDate.toISOString().split('T')[0];
+      const formattedStartTime = startDate.toISOString().split('T')[1].substring(0, 5);
+      
+      let formattedEndTime = "";
+      if (event.end) {
+        const endDate = new Date(event.end);
+        formattedEndTime = endDate.toISOString().split('T')[1].substring(0, 5);
+      }
+
+      setNewEvent({
+        id: event.id,
+        title: event.title,
+        date: formattedDate,
+        start: formattedStartTime,
+        end: formattedEndTime,
+      });
+      
+      setIsEdit(true);
+      setIsOpen(true);
+    }
   };
 
   const handleEventDrop = (info) => {
@@ -54,27 +86,42 @@ export default function BetterCalendar() {
   };
 
   const openEventForm = () => {
+    setIsEdit(false);
     // Set today's date as default
     const today = new Date().toISOString().split('T')[0];
     setNewEvent({
-      ...newEvent,
+      id: "",
+      title: "",
       date: today,
+      start: "",
+      end: "",
     });
     setIsOpen(true);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Create proper event object with ISO string dates
+    
     const formattedEvent = {
-      id: Date.now().toString(), // Add unique ID for each event
+      id: isEdit ? newEvent.id : Date.now().toString(),
       title: newEvent.title,
       start: `${newEvent.date}T${newEvent.start}:00`,
       end: newEvent.end ? `${newEvent.date}T${newEvent.end}:00` : `${newEvent.date}T${newEvent.start}:00`
     };
-    setEvents([...events, formattedEvent]);
+
+    if (isEdit) {
+      // Update existing event
+      setEvents(events.map(event => 
+        event.id === newEvent.id ? formattedEvent : event
+      ));
+    } else {
+      // Add new event
+      setEvents([...events, formattedEvent]);
+    }
+    
     setIsOpen(false);
-    setNewEvent({ title: "", date: "", start: "", end: "" });
+    setNewEvent({ id: "", title: "", date: "", start: "", end: "" });
+    setIsEdit(false);
   };
 
   return (
@@ -102,16 +149,18 @@ export default function BetterCalendar() {
         }}
         events={events}
         dateClick={handleDateClick}
+        eventClick={handleEventClick}
         editable={true}
         eventDrop={handleEventDrop}
         eventResize={handleEventResize}
       />
       
       {isOpen && (
-        /* Modal content remains the same */
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-bold mb-4">Aggiungi consegna</h2>
+            <h2 className="text-xl font-bold mb-4">
+              {isEdit ? "Modifica consegna" : "Aggiungi consegna"}
+            </h2>
             <form onSubmit={handleSubmit}>
               <div className="grid gap-4">
                 <div className="grid gap-2">
@@ -155,7 +204,7 @@ export default function BetterCalendar() {
                     type="submit"
                     className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                   >
-                    Salva
+                    {isEdit ? "Aggiorna" : "Salva"}
                   </button>
                 </div>
               </div>
