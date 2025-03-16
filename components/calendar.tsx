@@ -9,10 +9,10 @@ import allLocales from '@fullcalendar/core/locales-all';
 
 // Define status color mapping
 const statusColors = {
-  "in corso": "#4ade80", // green
-  "problemi": "#facc15", // yellow
-  "in ritardo": "#fb923c", // orange
-  "programmata": "#9ca3af", // gray
+  "completata": "#22c55e", // darker green
+  "in corso": "#3b82f6", // darker blue
+  "problemi/in ritardo": "#f97316", // darker orange
+  "programmata": "#6b7280", // darker gray
 };
 
 // Status legend component
@@ -37,19 +37,19 @@ export default function BetterCalendar() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
   const [events, setEvents] = React.useState([
-    { id: '0', title: "🕒 Rotta 'Napoli Centro' del veicolo 'Van 04'", start: "2025-03-10T09:00:00", end: "2025-03-10T15:00:00", status: "programmata" },
-    { id: '1', title: "🕒 Rotta 'Milano Centro' del veicolo 'Furgone 01'", start: "2025-03-11T08:00:00", end: "2025-03-11T12:00:00", status: "programmata" },
-    { id: '2', title: "🚚 Rotta 'Torino Sud' del veicolo 'Van 02'", start: "2025-03-11T09:00:00", end: "2025-03-11T14:00:00", status: "in corso" },
-    { id: '3', title: "⚠️ Rotta 'Roma Nord' del veicolo 'Furgone 03'", start: "2025-03-12T08:00:00", end: "2025-03-12T15:00:00", status: "problemi" },
-    { id: '4', title: "🕒 Rotta 'Firenze Centro' del veicolo 'Van 01'", start: "2025-03-12T09:00:00", end: "2025-03-12T16:00:00", status: "programmata" },
+    { id: '0', title: "🕒 Rotta 'Napoli Centro' del veicolo 'Van 04'", start: "2025-03-10T09:00:00", end: "2025-03-10T15:00:00", status: "completata" },
+    { id: '1', title: "🕒 Rotta 'Milano Centro' del veicolo 'Furgone 01'", start: "2025-03-11T08:00:00", end: "2025-03-11T12:00:00", status: "completata" },
+    { id: '2', title: "🚚 Rotta 'Torino Sud' del veicolo 'Van 02'", start: "2025-03-11T09:00:00", end: "2025-03-11T14:00:00", status: "completata" },
+    { id: '3', title: "⚠️ Rotta 'Roma Nord' del veicolo 'Furgone 03'", start: "2025-03-12T08:00:00", end: "2025-03-12T15:00:00", status: "completata" },
+    { id: '4', title: "🕒 Rotta 'Firenze Centro' del veicolo 'Van 01'", start: "2025-03-12T09:00:00", end: "2025-03-12T16:00:00", status: "problemi/in ritardo" },
     { id: '5', title: "🚚 Rotta 'Bologna Est' del veicolo 'Furgone 02'", start: "2025-03-13T08:00:00", end: "2025-03-13T13:00:00", status: "in corso" },
-    { id: '6', title: "⏰ Rotta 'Venezia Ovest' del veicolo 'Van 03'", start: "2025-03-13T14:00:00", end: "2025-03-13T19:00:00", status: "in ritardo" },
+    { id: '6', title: "⏰ Rotta 'Venezia Ovest' del veicolo 'Van 03'", start: "2025-03-13T14:00:00", end: "2025-03-13T19:00:00", status: "problemi/in ritardo" },
     { id: '7', title: "🕒 Rotta 'Genova Porto' del veicolo 'Furgone 01'", start: "2025-03-14T08:00:00", end: "2025-03-14T14:00:00", status: "programmata" },
-    { id: '8', title: "🚚 Rotta 'Padova Centro' del veicolo 'Van 02'", start: "2025-03-14T15:00:00", end: "2025-03-14T19:00:00", status: "in corso" },
-    { id: '9', title: "⚠️ Rotta 'Verona Sud' del veicolo 'Furgone 03'", start: "2025-03-15T08:00:00", end: "2025-03-15T13:00:00", status: "problemi" },
-    { id: '10', title: "⏰ Rotta 'Bergamo Est' del veicolo 'Van 01'", start: "2025-03-15T14:00:00", end: "2025-03-15T19:00:00", status: "in ritardo" },
+    { id: '8', title: "🚚 Rotta 'Padova Centro' del veicolo 'Van 02'", start: "2025-03-14T15:00:00", end: "2025-03-14T19:00:00", status: "programmata" },
+    { id: '9', title: "⚠️ Rotta 'Verona Sud' del veicolo 'Furgone 03'", start: "2025-03-15T08:00:00", end: "2025-03-15T13:00:00", status: "programmata" },
+    { id: '10', title: "⏰ Rotta 'Bergamo Est' del veicolo 'Van 01'", start: "2025-03-15T14:00:00", end: "2025-03-15T19:00:00", status: "programmata" },
     { id: '11', title: "🕒 Rotta 'Brescia Ovest' del veicolo 'Furgone 02'", start: "2025-03-16T08:00:00", end: "2025-03-16T15:00:00", status: "programmata" },
-    { id: '12', title: "🚚 Rotta 'Parma Centro' del veicolo 'Van 03'", start: "2025-03-16T16:00:00", end: "2025-03-16T19:00:00", status: "in corso" }
+    { id: '12', title: "🚚 Rotta 'Parma Centro' del veicolo 'Van 03'", start: "2025-03-16T16:00:00", end: "2025-03-16T19:00:00", status: "programmata" }
   ]);
   const [newEvent, setNewEvent] = React.useState({
     id: "",
@@ -182,7 +182,7 @@ export default function BetterCalendar() {
         <StatusLegend />
         <button
           onClick={openEventForm}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 hidden"
         >
           Aggiungi consegna
         </button>

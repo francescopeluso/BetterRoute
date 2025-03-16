@@ -21,6 +21,8 @@ export const metadata: Metadata = {
   description: "Massimizza l'efficienza delle tue consegne, col minor impatto ambientale. 🚀"
 };
 
+const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
 export default function RootLayout({
   children,
 }: Readonly<{
